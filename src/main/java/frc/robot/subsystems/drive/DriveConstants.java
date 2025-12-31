@@ -28,8 +28,8 @@ import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 public class DriveConstants {
     public static final double maxSpeedMetersPerSec = 4.8;
     public static final double odometryFrequency = 100.0; // Hz
-    public static final double trackWidth = Units.inchesToMeters(26.5);
-    public static final double wheelBase = Units.inchesToMeters(26.5);
+    public static final double trackWidth = Units.inchesToMeters(29.5);
+    public static final double wheelBase = Units.inchesToMeters(29.5);
     public static final double driveBaseRadius = Math.hypot(trackWidth / 2.0, wheelBase / 2.0);
     public static final Translation2d[] moduleTranslations = new Translation2d[] {
         new Translation2d(trackWidth / 2.0, wheelBase / 2.0),
@@ -45,20 +45,21 @@ public class DriveConstants {
     public static final Rotation2d backRightZeroRotation = new Rotation2d(0.0);
 
     // Device CAN IDs
-    public static final int pigeonCanId = 9;
+    // We use the NavX 2 Gyro
+    // public static final int pigeonCanId = 9;
 
-    public static final int frontLeftDriveCanId = 1;
-    public static final int backLeftDriveCanId = 3;
-    public static final int frontRightDriveCanId = 5;
-    public static final int backRightDriveCanId = 7;
+    public static final int frontLeftDriveCanId = 11;
+    public static final int backLeftDriveCanId = 21;
+    public static final int frontRightDriveCanId = 31;
+    public static final int backRightDriveCanId = 41;
 
-    public static final int frontLeftTurnCanId = 2;
-    public static final int backLeftTurnCanId = 4;
-    public static final int frontRightTurnCanId = 6;
-    public static final int backRightTurnCanId = 8;
+    public static final int frontLeftTurnCanId = 12;
+    public static final int backLeftTurnCanId = 22;
+    public static final int frontRightTurnCanId = 32;
+    public static final int backRightTurnCanId = 42;
 
     // Drive motor configuration
-    public static final int driveMotorCurrentLimit = 60;
+    public static final int driveMotorCurrentLimit = 80;
     public static final double wheelRadiusMeters = Units.inchesToMeters(1.5);
     public static final double driveMotorReduction =
             (45.0 * 22.0) / (14.0 * 15.0); // MAXSwerve with 14 pinion teeth and 22 spur teeth
@@ -71,9 +72,9 @@ public class DriveConstants {
             (2 * Math.PI) / 60.0 / driveMotorReduction; // Rotor RPM -> Wheel Rad/Sec
 
     // Drive PID configuration
-    public static final double driveKp = 0.0;
+    public static final double driveKp = 0.04;
     public static final double driveKd = 0.0;
-    public static final double driveKs = 0.0;
+    public static final double driveKs = 0.2;
     public static final double driveKv = 0.1;
     public static final double driveSimP = 0.05;
     public static final double driveSimD = 0.0;
@@ -92,7 +93,7 @@ public class DriveConstants {
     public static final double turnEncoderVelocityFactor = (2 * Math.PI) / 60.0; // RPM -> Rad/Sec
 
     // Turn PID configuration
-    public static final double turnKp = 2.0;
+    public static final double turnKp = 1.0;
     public static final double turnKd = 0.0;
     public static final double turnSimP = 8.0;
     public static final double turnSimD = 0.0;
@@ -118,7 +119,7 @@ public class DriveConstants {
     public static final DriveTrainSimulationConfig mapleSimConfig = DriveTrainSimulationConfig.Default()
             .withCustomModuleTranslations(moduleTranslations)
             .withRobotMass(Kilogram.of(robotMassKg))
-            .withGyro(COTS.ofPigeon2())
+            .withGyro(COTS.ofNav2X())
             .withSwerveModule(new SwerveModuleSimulationConfig(
                     driveGearbox,
                     turnGearbox,
