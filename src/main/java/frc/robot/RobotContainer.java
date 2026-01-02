@@ -174,6 +174,16 @@ public class RobotContainer {
         controller
                 .leftBumper()
                 .whileTrue(isSim ? SuperstructureCommands.scoreLeftL3Sim(drive, driveSimulation) : Commands.none());
+
+        controller
+                .rightBumper()
+                .and(controller.rightTrigger())
+                .whileTrue(isSim ? SuperstructureCommands.scoreRightL2Sim(drive, driveSimulation) : Commands.none());
+
+        controller
+                .leftBumper()
+                .and(controller.leftTrigger())
+                .whileTrue(isSim ? SuperstructureCommands.scoreLeftL2Sim(drive, driveSimulation) : Commands.none());
     }
 
     /**

@@ -34,4 +34,18 @@ public class SuperstructureCommands {
                 Commands.waitSeconds(0.1),
                 IntakeCommands.scoreL3Sim(driveSimulation));
     }
+
+    public static Command scoreRightL2Sim(Drive drive, SwerveDriveSimulation driveSimulation) {
+        return Commands.sequence(
+                Commands.deadline(Commands.waitSeconds(1), DriveCommands.alignToReef(drive, false)),
+                Commands.waitSeconds(0.1),
+                IntakeCommands.scoreL2Sim(driveSimulation));
+    }
+
+    public static Command scoreLeftL2Sim(Drive drive, SwerveDriveSimulation driveSimulation) {
+        return Commands.sequence(
+                Commands.deadline(Commands.waitSeconds(1), DriveCommands.alignToReef(drive, true)),
+                Commands.waitSeconds(0.1),
+                IntakeCommands.scoreL2Sim(driveSimulation));
+    }
 }

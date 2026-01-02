@@ -11,6 +11,18 @@ import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralOnFly
 
 public class IntakeCommands {
 
+    public static Command scoreL2Sim(SwerveDriveSimulation driveSimulation) {
+        return Commands.runOnce(() -> SimulatedArena.getInstance()
+                .addGamePieceProjectile(new ReefscapeCoralOnFly(
+                        driveSimulation.getSimulatedDriveTrainPose().getTranslation(),
+                        new Translation2d(0.55, 0),
+                        driveSimulation.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
+                        driveSimulation.getSimulatedDriveTrainPose().getRotation(),
+                        Meters.of(0.9),
+                        MetersPerSecond.of(2),
+                        Degrees.of(-35))));
+    }
+
     public static Command scoreL3Sim(SwerveDriveSimulation driveSimulation) {
         return Commands.runOnce(() -> SimulatedArena.getInstance()
                 .addGamePieceProjectile(new ReefscapeCoralOnFly(
