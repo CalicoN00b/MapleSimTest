@@ -13,14 +13,12 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.*;
 import static frc.robot.subsystems.vision.VisionConstants.*;
 import static frc.robot.subsystems.vision.VisionConstants.robotToCamera1;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,11 +26,11 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.SuperstructureCommands;
 import frc.robot.subsystems.drive.*;
 import frc.robot.subsystems.vision.*;
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
-import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralOnFly;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -53,6 +51,8 @@ public class RobotContainer {
     // Dashboard inputs
     private final LoggedDashboardChooser<Command> autoChooser;
 
+    private final boolean isSim;
+
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         switch (Constants.currentMode) {
@@ -70,6 +70,7 @@ public class RobotContainer {
                         drive,
                         new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0),
                         new VisionIOPhotonVision(VisionConstants.camera1Name, VisionConstants.robotToCamera1));
+                isSim = false;
 
                 break;
             case SIM:
@@ -94,6 +95,8 @@ public class RobotContainer {
                         new VisionIOPhotonVisionSim(
                                 camera1Name, robotToCamera1, driveSimulation::getSimulatedDriveTrainPose));
 
+                isSim = true;
+
                 break;
             default:
                 // Replayed robot, disable IO implementations
@@ -105,6 +108,8 @@ public class RobotContainer {
                         new ModuleIO() {},
                         (pose) -> {});
                 vision = new Vision(drive, new VisionIO() {}, new VisionIO() {});
+
+                isSim = true;
 
                 break;
         }
@@ -154,30 +159,31 @@ public class RobotContainer {
                         new Pose2d(drive.getPose().getTranslation(), new Rotation2d())); // zero gyro
         controller.start().onTrue(Commands.runOnce(resetGyro, drive).ignoringDisable(true));
 
-        // Example Coral Placement Code
-        // TODO: delete these code for your own project
-        if (Constants.currentMode == Constants.Mode.SIM) {
-            // L4 placement
-            controller.y().onTrue(Commands.runOnce(() -> SimulatedArena.getInstance()
-                    .addGamePieceProjectile(new ReefscapeCoralOnFly(
-                            driveSimulation.getSimulatedDriveTrainPose().getTranslation(),
-                            new Translation2d(0.4, 0),
-                            driveSimulation.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
-                            driveSimulation.getSimulatedDriveTrainPose().getRotation(),
-                            Meters.of(2),
-                            MetersPerSecond.of(1.5),
-                            Degrees.of(-80)))));
-            // L3 placement
-            controller.b().onTrue(Commands.runOnce(() -> SimulatedArena.getInstance()
-                    .addGamePieceProjectile(new ReefscapeCoralOnFly(
-                            driveSimulation.getSimulatedDriveTrainPose().getTranslation(),
-                            new Translation2d(0.4, 0),
-                            driveSimulation.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
-                            driveSimulation.getSimulatedDriveTrainPose().getRotation(),
-                            Meters.of(1.35),
-                            MetersPerSecond.of(1.5),
-                            Degrees.of(-60)))));
-        }
+        controller
+                .rightTrigger()
+                .whileTrue(isSim ? SuperstructureCommands.scoreRightL4Sim(drive, driveSimulation) : Commands.none());
+
+        controller
+                .rightBumper()
+                .whileTrue(isSim ? SuperstructureCommands.scoreRightL3Sim(drive, driveSimulation) : Commands.none());
+
+        controller
+                .leftTrigger()
+                .whileTrue(isSim ? SuperstructureCommands.scoreLeftL4Sim(drive, driveSimulation) : Commands.none());
+
+        controller
+                .leftBumper()
+                .whileTrue(isSim ? SuperstructureCommands.scoreLeftL3Sim(drive, driveSimulation) : Commands.none());
+
+        controller
+                .rightBumper()
+                .and(controller.rightTrigger())
+                .whileTrue(isSim ? SuperstructureCommands.scoreRightL2Sim(drive, driveSimulation) : Commands.none());
+
+        controller
+                .leftBumper()
+                .and(controller.leftTrigger())
+                .whileTrue(isSim ? SuperstructureCommands.scoreLeftL2Sim(drive, driveSimulation) : Commands.none());
     }
 
     /**
