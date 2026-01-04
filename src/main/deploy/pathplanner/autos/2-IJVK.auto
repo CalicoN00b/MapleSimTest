@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "PP1-J"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Sim L4 Right"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "PPJ-V"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "PPV-K"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Sim L4 Left"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
