@@ -166,9 +166,9 @@ public class DriveCommands {
         yController.reset();
         thetaController.reset();
 
-        xController.setTolerance(Units.inchesToMeters(0.1));
-        yController.setTolerance(Units.inchesToMeters(0.1));
-        thetaController.setTolerance(Units.degreesToRadians(1));
+        xController.setTolerance(Units.inchesToMeters(0.5));
+        yController.setTolerance(Units.inchesToMeters(0.5));
+        thetaController.setTolerance(Units.degreesToRadians(2));
 
         return Commands.run(
                         () -> {

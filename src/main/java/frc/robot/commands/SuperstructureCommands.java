@@ -9,42 +9,42 @@ public class SuperstructureCommands {
 
     public static Command scoreRightL4Sim(Drive drive, SwerveDriveSimulation driveSimulation) {
         return Commands.sequence(
-                Commands.deadline(Commands.waitSeconds(1), DriveCommands.alignToReef(drive, false)),
+                Commands.race(Commands.waitSeconds(1), DriveCommands.alignToReef(drive, false)),
                 Commands.waitSeconds(0.1),
                 IntakeCommands.scoreL4Sim(driveSimulation));
     }
 
     public static Command scoreLeftL4Sim(Drive drive, SwerveDriveSimulation driveSimulation) {
         return Commands.sequence(
-                Commands.deadline(Commands.waitSeconds(1), DriveCommands.alignToReef(drive, true)),
+                Commands.race(Commands.waitSeconds(1), DriveCommands.alignToReef(drive, true)),
                 Commands.waitSeconds(0.1),
                 IntakeCommands.scoreL4Sim(driveSimulation));
     }
 
     public static Command scoreRightL3Sim(Drive drive, SwerveDriveSimulation driveSimulation) {
         return Commands.sequence(
-                Commands.deadline(Commands.waitSeconds(1), DriveCommands.alignToReef(drive, false)),
+                Commands.race(Commands.waitSeconds(1), DriveCommands.alignToReef(drive, false)),
                 Commands.waitSeconds(0.1),
                 IntakeCommands.scoreL3Sim(driveSimulation));
     }
 
     public static Command scoreLeftL3Sim(Drive drive, SwerveDriveSimulation driveSimulation) {
         return Commands.sequence(
-                Commands.deadline(Commands.waitSeconds(1), DriveCommands.alignToReef(drive, true)),
+                Commands.race(Commands.waitSeconds(1), DriveCommands.alignToReef(drive, true)),
                 Commands.waitSeconds(0.1),
                 IntakeCommands.scoreL3Sim(driveSimulation));
     }
 
     public static Command scoreRightL2Sim(Drive drive, SwerveDriveSimulation driveSimulation) {
         return Commands.sequence(
-                Commands.deadline(Commands.waitSeconds(1), DriveCommands.alignToReef(drive, false)),
+                Commands.race(Commands.waitSeconds(1), DriveCommands.alignToReef(drive, false)),
                 Commands.waitSeconds(0.1),
                 IntakeCommands.scoreL2Sim(driveSimulation));
     }
 
     public static Command scoreLeftL2Sim(Drive drive, SwerveDriveSimulation driveSimulation) {
         return Commands.sequence(
-                Commands.deadline(Commands.waitSeconds(1), DriveCommands.alignToReef(drive, true)),
+                Commands.race(Commands.waitSeconds(1), DriveCommands.alignToReef(drive, true)),
                 Commands.waitSeconds(0.1),
                 IntakeCommands.scoreL2Sim(driveSimulation));
     }
